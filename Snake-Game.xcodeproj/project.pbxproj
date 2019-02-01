@@ -15,6 +15,7 @@
 		01BF03CA2204DAC400B1373F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BF03C82204DAC400B1373F /* Main.storyboard */; };
 		01BF03CC2204DAC600B1373F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01BF03CB2204DAC600B1373F /* Assets.xcassets */; };
 		01BF03CF2204DAC600B1373F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 01BF03CD2204DAC600B1373F /* LaunchScreen.storyboard */; };
+		01BF03DA2204DBD800B1373F /* Snake.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BF03D92204DBD800B1373F /* Snake.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		01BF03CB2204DAC600B1373F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		01BF03CE2204DAC600B1373F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		01BF03D02204DAC600B1373F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		01BF03D92204DBD800B1373F /* Snake.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snake.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,10 +62,10 @@
 		01BF03BD2204DAC400B1373F /* Snake-Game */ = {
 			isa = PBXGroup;
 			children = (
+				01BF03D82204DB6800B1373F /* Code-y stuff */,
 				01BF03BE2204DAC400B1373F /* AppDelegate.swift */,
 				01BF03C02204DAC400B1373F /* GameScene.sks */,
 				01BF03C22204DAC400B1373F /* Actions.sks */,
-				01BF03C42204DAC400B1373F /* GameScene.swift */,
 				01BF03C62204DAC400B1373F /* GameViewController.swift */,
 				01BF03C82204DAC400B1373F /* Main.storyboard */,
 				01BF03CB2204DAC600B1373F /* Assets.xcassets */,
@@ -71,6 +73,15 @@
 				01BF03D02204DAC600B1373F /* Info.plist */,
 			);
 			path = "Snake-Game";
+			sourceTree = "<group>";
+		};
+		01BF03D82204DB6800B1373F /* Code-y stuff */ = {
+			isa = PBXGroup;
+			children = (
+				01BF03C42204DAC400B1373F /* GameScene.swift */,
+				01BF03D92204DBD800B1373F /* Snake.swift */,
+			);
+			path = "Code-y stuff";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,6 +158,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				01BF03C52204DAC400B1373F /* GameScene.swift in Sources */,
+				01BF03DA2204DBD800B1373F /* Snake.swift in Sources */,
 				01BF03C72204DAC400B1373F /* GameViewController.swift in Sources */,
 				01BF03BF2204DAC400B1373F /* AppDelegate.swift in Sources */,
 			);
