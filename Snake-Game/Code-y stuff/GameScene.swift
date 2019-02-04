@@ -10,22 +10,25 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
-    
-    var s:Snake!;
-    var timer:Timer!;
+    // Snake
+    var loc:CGPoint = CGPoint();
+    var direction:CGVector = CGVector();
+    var character:SKSpriteNode = SKSpriteNode();
     
     override func didMove(to view: SKView) {
-        timer = Timer.init(timeInterval: TimeInterval(0.5), target: moveSnake(), selector: Selector.init(("Hello")), userInfo: nil, repeats: true)
+        self.anchorPoint = CGPoint(x: 0, y: 1);
         
+        direction = CGVector(dx: 0, dy: 1);
+        character = SKSpriteNode(color: UIColor.green, size: CGSize(width: 50, height: 50));
+//        loc = CGPoint(x: 500, y: 500);
+//        character.position = loc;
         
-        s = Snake();
-        self.addChild(s.character!);
+        self.addChild(character);
         
     }
+
     
-    func moveSnake() {
-        s.character.position = CGPoint(x: s.character.position.x + 50, y: s.character.position.y);
-    }
+    
 //    s.character.position = CGPoint(x: s.character.position.x + 50, y: s.character.position.y);
     override func update(_ currentTime: TimeInterval) {
         
