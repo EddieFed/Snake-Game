@@ -10,27 +10,42 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
-    // Snake
-    var loc:CGPoint = CGPoint();
-    var direction:CGVector = CGVector();
-    var character:SKSpriteNode = SKSpriteNode();
+
+//    var game:GameManager!;
+    var snake:SKSpriteNode!;
+    var apple:SKSpriteNode!;
+    
+    var gameTimer:Timer!;
     
     override func didMove(to view: SKView) {
         self.anchorPoint = CGPoint(x: 0, y: 1);
+//        game = GameManager();
         
-        direction = CGVector(dx: 0, dy: 1);
-        character = SKSpriteNode(color: UIColor.green, size: CGSize(width: 50, height: 50));
-//        loc = CGPoint(x: 500, y: 500);
-//        character.position = loc;
+        snake = SKSpriteNode(color: UIColor.green, size: CGSize(width: 100, height: 100));
+        snake.anchorPoint = CGPoint(x: 0, y: 1);
+        snake.position = CGPoint(x: 0, y: 0);
         
-        self.addChild(character);
         
+        self.addChild(snake);
+        
+        gameTimer = Timer.scheduledTimer(timeInterval: 0.8, target: self, selector: #selector(self.updateGame), userInfo: nil, repeats: true);
+        
+        
+    }
+    
+    @objc func updateGame() {
+        snake.position = CGPoint(x: snake.position.x + 100, y: snake.position.y);
+    
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+
     }
 
     
-    
-//    s.character.position = CGPoint(x: s.character.position.x + 50, y: s.character.position.y);
     override func update(_ currentTime: TimeInterval) {
         
+        
     }
+    
 }
