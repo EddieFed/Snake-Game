@@ -94,21 +94,29 @@ class GameScene: SKScene {
     }
     
     
+    func inBoard(position: CGPoint) -> Bool {
+        if (position.x < -300 || position.x > 250) {
+            print("Dead");
+        }
+        return true;
+    }
+    
+    
     @objc func updateGame() {
         var appleEaten:Bool = false;
         var lastSnakePos:CGPoint = CGPoint();
         
         if(snakeParts[0].position == apple.position) {
-            print("Eaten!");
+//            print("Eaten!");
             appleEaten = true;
             lastSnakePos = snakeParts[snakeParts.count - 1].position;
-            print("Snake tail at \(lastSnakePos)")
+//            print("Snake tail at \(lastSnakePos)")
             spawnApple();
 
         }
         
         if(snakeParts.count > 1) {
-            print("\(snakeParts.count)")
+//            print("\(snakeParts.count)")
             
             let reverseOrder = (1...(snakeParts.count - 1)).reversed();
             for s in reverseOrder {
@@ -126,25 +134,29 @@ class GameScene: SKScene {
         
         snakeParts[0].position = CGPoint(x: (snakeParts[0].position.x + (snakeSize.width * snakeDir.dx)), y: (snakeParts[0].position.y - (snakeSize.height * snakeDir.dy)));
         
+        if(inBoard(position: snakeParts[0].position) == false) {
+            
+        }
+        
     }
     
     
     @objc func swipe(gesture: UISwipeGestureRecognizer) {
         switch(gesture.direction) {
             case(UISwipeGestureRecognizer.Direction.down): do {
-                print("Swiped down");
+//                print("Swiped down");
                 snakeDir = CGVector(dx: 0, dy: 1);
             }
             case(UISwipeGestureRecognizer.Direction.up): do {
-                print("Swiped Up");
+//                print("Swiped Up");
                 snakeDir = CGVector(dx: 0, dy: -1);
             }
             case(UISwipeGestureRecognizer.Direction.right): do {
-                print("Swiped Right");
+//                print("Swiped Right");
                 snakeDir = CGVector(dx: 1, dy: 0);
             }
             case(UISwipeGestureRecognizer.Direction.left): do {
-                print("Swiped Left");
+//                print("Swiped Left");
                 snakeDir = CGVector(dx: -1, dy: 0);
             }
             default: do {
