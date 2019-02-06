@@ -53,51 +53,75 @@ class GameScene: SKScene {
         self.addChild(board);
         
         // Snake head info
-        snake = SKSpriteNode(color: UIColor.green, size: snakeSize);
-        snake.anchorPoint = topLeftAnchor;
-        snake.position = CGPoint(x: 0, y: 0);
+        snake = spawnSnake(position: CGPoint(x: 0, y: 0));
         snakeParts.append(snake);
         board.addChild(snake);
         
         // Apple info
         apple = SKSpriteNode(color: UIColor.red, size: snakeSize);
         apple.anchorPoint = topLeftAnchor;
-        spawnApple();
+        spawnApple()
         board.addChild(apple);
-        
-        
-//        let snake2 = SKSpriteNode(color: UIColor.green, size: snakeSize);
-//        snake2.anchorPoint = topLeftAnchor;
-//        snake2.position = CGPoint(x: -50, y: 0);
-//        snakeParts.append(snake2);
-//        board.addChild(snake2);
         
         snakeDir = CGVector(dx: 1, dy: 0);
         
-        gameTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(self.updateGame), userInfo: nil, repeats: true);
+        gameTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.updateGame), userInfo: nil, repeats: true);
         
     }
     
+    
+    func spawnSnake(position: CGPoint) -> SKSpriteNode {
+        let part = SKSpriteNode(color: UIColor.green, size: snakeSize);
+        part.anchorPoint = topLeftAnchor;
+        part.position = position;
+        part.zPosition = 2;
+        
+        return part;
+    }
+    
+    
     func spawnApple() {
-        let appleX = Int(arc4random_uniform(13))*25;
-        let appleY = Int(arc4random_uniform(13))*25;
-        apple.position = CGPoint(x: appleX, y: appleY);
+    
+        var applePos = [Int(arc4random_uniform(12))*25, Int(arc4random_uniform(12))*25];
+        for p in 0...1 {
+            if (Int(arc4random_uniform(2)) == 0) {
+                applePos[p] *= -1;
+            }
+        }
+        
+        apple.position = CGPoint(x: applePos[0], y: applePos[1]);
+
     }
     
     
     @objc func updateGame() {
+        var appleEaten:Bool = false;
+        var lastSnakePos:CGPoint = CGPoint();
         
         if(snakeParts[0].position == apple.position) {
             print("Eaten!");
+            appleEaten = true;
+            lastSnakePos = snakeParts[snakeParts.count - 1].position;
+            print("Snake tail at \(lastSnakePos)")
             spawnApple();
-            //TODO make snake parts add
-//            snakeParts.append(<#T##newElement: SKSpriteNode##SKSpriteNode#>)
+
         }
         
         if(snakeParts.count > 1) {
-            for s in (snakeParts.count - 1)...1 {
+            print("\(snakeParts.count)")
+            
+            let reverseOrder = (1...(snakeParts.count - 1)).reversed();
+            for s in reverseOrder {
                 snakeParts[s].position = snakeParts[s-1].position;
             }
+        }
+    
+        if(appleEaten == true) {
+            let newPart = spawnSnake(position: lastSnakePos);
+            snakeParts.append(newPart);
+            board.addChild(newPart);
+            lastSnakePos = CGPoint();
+            appleEaten = false;
         }
         
         snakeParts[0].position = CGPoint(x: (snakeParts[0].position.x + (snakeSize.width * snakeDir.dx)), y: (snakeParts[0].position.y - (snakeSize.height * snakeDir.dy)));
