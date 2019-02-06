@@ -60,11 +60,9 @@ class GameScene: SKScene {
         board.addChild(snake);
         
         // Apple info
-        let appleX = Int(arc4random_uniform(13))*25;
-        let appleY = Int(arc4random_uniform(13))*25;
         apple = SKSpriteNode(color: UIColor.red, size: snakeSize);
         apple.anchorPoint = topLeftAnchor;
-        apple.position = CGPoint(x: appleX, y: appleY);
+        spawnApple();
         board.addChild(apple);
         
         
@@ -80,11 +78,20 @@ class GameScene: SKScene {
         
     }
     
+    func spawnApple() {
+        let appleX = Int(arc4random_uniform(13))*25;
+        let appleY = Int(arc4random_uniform(13))*25;
+        apple.position = CGPoint(x: appleX, y: appleY);
+    }
+    
     
     @objc func updateGame() {
         
         if(snakeParts[0].position == apple.position) {
             print("Eaten!");
+            spawnApple();
+            //TODO make snake parts add
+//            snakeParts.append(<#T##newElement: SKSpriteNode##SKSpriteNode#>)
         }
         
         if(snakeParts.count > 1) {
