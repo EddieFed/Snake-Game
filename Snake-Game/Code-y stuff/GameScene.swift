@@ -98,7 +98,7 @@ class GameScene: SKScene {
         if (snakeParts[0].position.x < -300 || snakeParts[0].position.x > 275 || snakeParts[0].position.y < -300 || snakeParts[0].position.y > 275) {
             snakeParts[0].color = UIColor.orange;
             print("Dead");
-            reutrn false;
+            return false;
         }
         return true;
     }
