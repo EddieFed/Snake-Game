@@ -72,7 +72,7 @@ class GameScene: SKScene {
     
     func spawnSnake(position: CGPoint) -> SKSpriteNode {
         let part = SKSpriteNode(color: UIColor.green, size: snakeSize);
-        part.anchorPoint = topLeftAnchor;
+        part.anchorPoint = CGPoint(x: 0, y: 1);
         part.position = position;
         part.zPosition = 2;
         
@@ -95,8 +95,10 @@ class GameScene: SKScene {
     
     
     func inBoard(position: CGPoint) -> Bool {
-        if (position.x < -300 || position.x > 250) {
+        if (snakeParts[0].position.x < -300 || snakeParts[0].position.x > 275 || snakeParts[0].position.y < -300 || snakeParts[0].position.y > 275) {
+            snakeParts[0].color = UIColor.orange;
             print("Dead");
+            reutrn false;
         }
         return true;
     }
@@ -135,7 +137,7 @@ class GameScene: SKScene {
         snakeParts[0].position = CGPoint(x: (snakeParts[0].position.x + (snakeSize.width * snakeDir.dx)), y: (snakeParts[0].position.y - (snakeSize.height * snakeDir.dy)));
         
         if(inBoard(position: snakeParts[0].position) == false) {
-            
+            gameTimer.invalidate();
         }
         
     }
