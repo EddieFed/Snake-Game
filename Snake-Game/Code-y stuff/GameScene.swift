@@ -17,6 +17,7 @@ class GameScene: SKScene {
     var board:SKSpriteNode!;
     var snake:SKSpriteNode!;
     var apple:SKSpriteNode!;
+    var scoreKeeper:SKLabelNode!;
     
     var snakeSize:CGSize = CGSize(width: 25, height: 25);
     var snakeDir:CGVector!;
@@ -65,6 +66,12 @@ class GameScene: SKScene {
         
         snakeDir = CGVector(dx: 1, dy: 0);
         
+        scoreKeeper = SKLabelNode(text: "Score: 0");
+        scoreKeeper.position = CGPoint(x: (board.position.x - 245), y: (board.position.y + 350));
+//        scoreKeeper.fontName = "systemFont";
+        scoreKeeper.color = UIColor.white;
+        self.addChild(scoreKeeper);
+        
         gameTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.updateGame), userInfo: nil, repeats: true);
         
     }
@@ -95,8 +102,9 @@ class GameScene: SKScene {
     
     
     func inBoard(position: CGPoint) -> Bool {
-        if (snakeParts[0].position.x < -300 || snakeParts[0].position.x > 275 || snakeParts[0].position.y < -300 || snakeParts[0].position.y > 275) {
+        if (snakeParts[0].position.x < -300 || snakeParts[0].position.x > 275 || snakeParts[0].position.y < -275 || snakeParts[0].position.y > 300) {
             snakeParts[0].color = UIColor.orange;
+//            snakeParts.
             print("Dead");
             return false;
         }
@@ -108,7 +116,8 @@ class GameScene: SKScene {
         var appleEaten:Bool = false;
         var lastSnakePos:CGPoint = CGPoint();
         
-        if(snakeParts[0].position == apple.position) {
+        // Check for if apple should be eaten
+        if (snakeParts[0].position == apple.position) {
 //            print("Eaten!");
             appleEaten = true;
             lastSnakePos = snakeParts[snakeParts.count - 1].position;
@@ -117,16 +126,17 @@ class GameScene: SKScene {
 
         }
         
-        if(snakeParts.count > 1) {
+        // Move snake parts
+        if (snakeParts.count > 1) {
 //            print("\(snakeParts.count)")
-            
             let reverseOrder = (1...(snakeParts.count - 1)).reversed();
             for s in reverseOrder {
                 snakeParts[s].position = snakeParts[s-1].position;
             }
         }
-    
-        if(appleEaten == true) {
+        
+        // Add new part to the snake after it moved and ate an apple
+        if (appleEaten == true) {
             let newPart = spawnSnake(position: lastSnakePos);
             snakeParts.append(newPart);
             board.addChild(newPart);
@@ -134,32 +144,58 @@ class GameScene: SKScene {
             appleEaten = false;
         }
         
+        // Move head of snake
         snakeParts[0].position = CGPoint(x: (snakeParts[0].position.x + (snakeSize.width * snakeDir.dx)), y: (snakeParts[0].position.y - (snakeSize.height * snakeDir.dy)));
         
-        if(inBoard(position: snakeParts[0].position) == false) {
+        // Check if snake is within bounds
+        if (inBoard(position: snakeParts[0].position) == false) {
             gameTimer.invalidate();
         }
+        
+        // Check if snake ate itself
+        if (snakeParts.count > 5) {
+            for s in 4...(snakeParts.count - 1) {
+                if (snakeParts[0].position == snakeParts[s].position) {
+                    snakeParts[0].color = UIColor.orange;
+                    gameTimer.invalidate();
+                }
+            }
+        }
+
         
     }
     
     
     @objc func swipe(gesture: UISwipeGestureRecognizer) {
+        let down = CGVector(dx: 0, dy: 1);
+        let up = CGVector(dx: 0, dy: -1);
+        let right = CGVector(dx: 1, dy: 0);
+        let left = CGVector(dx: -1, dy: 0);
+        
         switch(gesture.direction) {
             case(UISwipeGestureRecognizer.Direction.down): do {
 //                print("Swiped down");
-                snakeDir = CGVector(dx: 0, dy: 1);
+                if (snakeDir != up) {
+                    snakeDir = down;
+                }
             }
             case(UISwipeGestureRecognizer.Direction.up): do {
 //                print("Swiped Up");
-                snakeDir = CGVector(dx: 0, dy: -1);
+                if (snakeDir != down) {
+                    snakeDir = up;
+                }
             }
             case(UISwipeGestureRecognizer.Direction.right): do {
 //                print("Swiped Right");
-                snakeDir = CGVector(dx: 1, dy: 0);
+                if (snakeDir != left) {
+                    snakeDir = right;
+                }
             }
             case(UISwipeGestureRecognizer.Direction.left): do {
 //                print("Swiped Left");
-                snakeDir = CGVector(dx: -1, dy: 0);
+                if (snakeDir != right) {
+                    snakeDir = left;
+                }
             }
             default: do {
                     break;
