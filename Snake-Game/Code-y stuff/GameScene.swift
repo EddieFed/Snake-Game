@@ -18,12 +18,16 @@ class GameScene: SKScene {
     var snake:SKSpriteNode!;
     var apple:SKSpriteNode!;
     var scoreKeeper:SKLabelNode!;
+    var restartButton:SKLabelNode!;
+    var restartButtonBG:SKSpriteNode!;
     
     var snakeSize:CGSize = CGSize(width: 25, height: 25);
     var snakeDir:CGVector!;
     var snakeParts:[SKSpriteNode] = [];
     
     var gameTimer:Timer!;
+    
+    var score = 0;
     
     
     override func didMove(to view: SKView) {
@@ -64,13 +68,28 @@ class GameScene: SKScene {
         spawnApple()
         board.addChild(apple);
         
-        snakeDir = CGVector(dx: 1, dy: 0);
+        snakeDir = CGVector(dx: 0, dy: 0);
         
-        scoreKeeper = SKLabelNode(text: "Score: 0");
+        scoreKeeper = SKLabelNode(text: "Score: \(score)");
         scoreKeeper.position = CGPoint(x: (board.position.x - 245), y: (board.position.y + 350));
-//        scoreKeeper.fontName = "systemFont";
+        scoreKeeper.fontName = "systemFont";
         scoreKeeper.color = UIColor.white;
         self.addChild(scoreKeeper);
+        
+        
+        restartButton = SKLabelNode(text: "Restart?");
+        restartButton.position = CGPoint(x: 0, y: -10);
+        restartButton.fontName = "systemFont";
+        restartButton.color = UIColor.white;
+        
+        restartButtonBG = SKSpriteNode(color: UIColor.black, size: CGSize(width: restartButton.frame.width + 20, height: restartButton.frame.height + 20));
+        restartButtonBG.position = CGPoint(x: 0, y: 0);
+        restartButtonBG.addChild(restartButton);
+        board.addChild(restartButtonBG);
+//        restartButtonBG.isHidden = true;
+//        restartButton?.perform(#selector(self.showHideRestart), on: Thread, with: nil, waitUntilDone: false)
+        //        restartButton.removeFromParent();
+    
         
         gameTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.updateGame), userInfo: nil, repeats: true);
         
@@ -104,7 +123,6 @@ class GameScene: SKScene {
     func inBoard(position: CGPoint) -> Bool {
         if (snakeParts[0].position.x < -300 || snakeParts[0].position.x > 275 || snakeParts[0].position.y < -275 || snakeParts[0].position.y > 300) {
             snakeParts[0].color = UIColor.orange;
-//            snakeParts.
             print("Dead");
             return false;
         }
@@ -141,6 +159,8 @@ class GameScene: SKScene {
             snakeParts.append(newPart);
             board.addChild(newPart);
             lastSnakePos = CGPoint();
+            score += 1;
+            scoreKeeper.text = "Score: \(score)";
             appleEaten = false;
         }
         
@@ -200,6 +220,17 @@ class GameScene: SKScene {
             default: do {
                     break;
             }
+        }
+    }
+    
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for t in touches {
+            let loc = t.location(in: board);
+            if (restartButtonBG.contains(loc)) {
+                print("restart!");
+            }
+            
         }
     }
     
