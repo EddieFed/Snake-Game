@@ -85,7 +85,7 @@ class GameScene: SKScene {
         restartButtonBG = SKSpriteNode(color: UIColor.black, size: CGSize(width: restartButton.frame.width + 20, height: restartButton.frame.height + 20));
         restartButtonBG.position = CGPoint(x: 0, y: 0);
         restartButtonBG.addChild(restartButton);
-        board.addChild(restartButtonBG);
+//        board.addChild(restartButtonBG);
 //        restartButtonBG.isHidden = true;
 //        restartButton?.perform(#selector(self.showHideRestart), on: Thread, with: nil, waitUntilDone: false)
         //        restartButton.removeFromParent();
@@ -122,8 +122,8 @@ class GameScene: SKScene {
     
     func inBoard(position: CGPoint) -> Bool {
         if (snakeParts[0].position.x < -300 || snakeParts[0].position.x > 275 || snakeParts[0].position.y < -275 || snakeParts[0].position.y > 300) {
-            snakeParts[0].color = UIColor.orange;
-            print("Dead");
+//            snakeParts[0].color = UIColor.orange;
+//            print("Dead");
             return false;
         }
         return true;
@@ -169,20 +169,28 @@ class GameScene: SKScene {
         
         // Check if snake is within bounds
         if (inBoard(position: snakeParts[0].position) == false) {
-            gameTimer.invalidate();
+            dead();
         }
         
         // Check if snake ate itself
         if (snakeParts.count > 5) {
             for s in 4...(snakeParts.count - 1) {
                 if (snakeParts[0].position == snakeParts[s].position) {
-                    snakeParts[0].color = UIColor.orange;
-                    gameTimer.invalidate();
+//                    dead();
                 }
             }
         }
 
         
+    }
+    
+    
+    func dead() {
+        snakeParts[0].color = UIColor.orange;
+        gameTimer.invalidate();
+        print("Dead");
+
+        board.addChild(restartButtonBG);
     }
     
     
@@ -229,9 +237,23 @@ class GameScene: SKScene {
             let loc = t.location(in: board);
             if (restartButtonBG.contains(loc)) {
                 print("restart!");
+                restart()
             }
             
         }
+    }
+    
+    func restart() {
+        board.removeAllChildren();
+        self.removeAllChildren();
+        snakeParts = [];
+        snakeDir = CGVector(dx: 0, dy: 0);
+        spawnApple();
+        
+        didMove(to: self.view!);
+        score = 0;
+        scoreKeeper.text = "Score: \(score)";
+
     }
     
     
