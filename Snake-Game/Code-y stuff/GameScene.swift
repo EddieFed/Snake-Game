@@ -176,7 +176,7 @@ class GameScene: SKScene {
         if (snakeParts.count > 5) {
             for s in 4...(snakeParts.count - 1) {
                 if (snakeParts[0].position == snakeParts[s].position) {
-//                    dead();
+                    dead();
                 }
             }
         }
